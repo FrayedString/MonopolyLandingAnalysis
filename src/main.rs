@@ -282,7 +282,7 @@ fn draw_chance(deck: &mut ChanceDeck) -> Option<&GameActionCard> {
 
 
 fn initialize_board() -> HashMap::<u8, BoardSpace> {
-    let mut space_defs = HashMap::<u8, BoardSpace>::new();
+    let mut space_defs = HashMap::<u8, BoardSpace>::with_capacity(40);
 
     space_defs.insert(0, BoardSpace::new(String::from("Go")));
     space_defs.insert(1, BoardSpace::new(String::from("Mediterranean Avenue")));

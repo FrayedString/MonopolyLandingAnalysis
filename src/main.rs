@@ -13,6 +13,11 @@ struct BoardSpace {
     name : String,
     landed_count : Cell<u32>
 }
+impl BoardSpace {
+    fn new(name: String) -> Self {
+        Self { name: name, landed_count: Cell::<u32>::from(0) }
+    }
+}
 
 
 struct Player
@@ -130,8 +135,6 @@ fn main() {
     let mut community_chest = CommunityChestDeck::new();
     let mut chance = ChanceDeck::new();
 
-    //Spaces 0-39 where 0=go and 39=boardwalk
-    //let spaces: [Mutex<i32>; 40] = array_init::array_init(|_i: usize| (Cell::<u32>::from(0)));
 
     let work = start_work(4, 30, &game_board, &mut community_chest, &mut chance);
     block_on(work);
@@ -281,46 +284,46 @@ fn draw_chance(deck: &mut ChanceDeck) -> Option<&GameActionCard> {
 fn initialize_board() -> HashMap::<u8, BoardSpace> {
     let mut space_defs = HashMap::<u8, BoardSpace>::new();
 
-    space_defs.insert(0, BoardSpace {name: String::from("Go"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(1, BoardSpace {name: String::from("Mediterranean Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(2, BoardSpace {name: String::from("Community Chest"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(3, BoardSpace {name: String::from("Baltic Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(4, BoardSpace {name: String::from("Income Tax"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(5, BoardSpace {name: String::from("Reading Railroad"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(6, BoardSpace {name: String::from("Oriental Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(7, BoardSpace {name: String::from("Chance"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(8, BoardSpace {name: String::from("Vermont Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(9, BoardSpace {name: String::from("Connecticut Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(10, BoardSpace {name: String::from("Jail"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(11, BoardSpace {name: String::from("St. Charles Place"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(12, BoardSpace {name: String::from("Electric Company"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(13, BoardSpace {name: String::from("States Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(14, BoardSpace {name: String::from("Virginia Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(15, BoardSpace {name: String::from("Pennsylvania Railroad"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(16, BoardSpace {name: String::from("St. James Place"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(17, BoardSpace {name: String::from("Community Chest"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(18, BoardSpace {name: String::from("Tennessee Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(19, BoardSpace {name: String::from("New York Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(20, BoardSpace {name: String::from("Free Parking"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(21, BoardSpace {name: String::from("Kentucky Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(22, BoardSpace {name: String::from("Chance"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(23, BoardSpace {name: String::from("Indiana Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(24, BoardSpace {name: String::from("Illinois Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(25, BoardSpace {name: String::from("B & O Railroad"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(26, BoardSpace {name: String::from("Atlantic Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(27, BoardSpace {name: String::from("Ventnor Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(28, BoardSpace {name: String::from("Waterworks"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(29, BoardSpace {name: String::from("Marvin Gardens"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(30, BoardSpace {name: String::from("Go to Jail"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(31, BoardSpace {name: String::from("Pacific Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(32, BoardSpace {name: String::from("North Carolina Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(33, BoardSpace {name: String::from("Community Chest"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(34, BoardSpace {name: String::from("Pennsylvania Avenue"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(35, BoardSpace {name: String::from("Short Line Railroad"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(36, BoardSpace {name: String::from("Chance"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(37, BoardSpace {name: String::from("Park Place"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(38, BoardSpace {name: String::from("Luxury Tax"), landed_count: Cell::<u32>::from(0)});
-    space_defs.insert(39, BoardSpace {name: String::from("Boardwalk"), landed_count: Cell::<u32>::from(0)});
+    space_defs.insert(0, BoardSpace::new(String::from("Go")));
+    space_defs.insert(1, BoardSpace::new(String::from("Mediterranean Avenue")));
+    space_defs.insert(2, BoardSpace::new(String::from("Community Chest")));
+    space_defs.insert(3, BoardSpace::new(String::from("Baltic Avenue")));
+    space_defs.insert(4, BoardSpace::new(String::from("Income Tax")));
+    space_defs.insert(5, BoardSpace::new(String::from("Reading Railroad")));
+    space_defs.insert(6, BoardSpace::new(String::from("Oriental Avenue")));
+    space_defs.insert(7, BoardSpace::new(String::from("Chance")));
+    space_defs.insert(8, BoardSpace::new(String::from("Vermont Avenue")));
+    space_defs.insert(9, BoardSpace::new(String::from("Connecticut Avenue")));
+    space_defs.insert(10, BoardSpace::new(String::from("Jail")));
+    space_defs.insert(11, BoardSpace::new(String::from("St. Charles Place")));
+    space_defs.insert(12, BoardSpace::new(String::from("Electric Company")));
+    space_defs.insert(13, BoardSpace::new(String::from("States Avenue")));
+    space_defs.insert(14, BoardSpace::new(String::from("Virginia Avenue")));
+    space_defs.insert(15, BoardSpace::new(String::from("Pennsylvania Railroad")));
+    space_defs.insert(16, BoardSpace::new(String::from("St. James Place")));
+    space_defs.insert(17, BoardSpace::new(String::from("Community Chest")));
+    space_defs.insert(18, BoardSpace::new(String::from("Tennessee Avenue")));
+    space_defs.insert(19, BoardSpace::new(String::from("New York Avenue")));
+    space_defs.insert(20, BoardSpace::new(String::from("Free Parking")));
+    space_defs.insert(21, BoardSpace::new(String::from("Kentucky Avenue")));
+    space_defs.insert(22, BoardSpace::new(String::from("Chance")));
+    space_defs.insert(23, BoardSpace::new(String::from("Indiana Avenue")));
+    space_defs.insert(24, BoardSpace::new(String::from("Illinois Avenue")));
+    space_defs.insert(25, BoardSpace::new(String::from("B & O Railroad")));
+    space_defs.insert(26, BoardSpace::new(String::from("Atlantic Avenue")));
+    space_defs.insert(27, BoardSpace::new(String::from("Ventnor Avenue")));
+    space_defs.insert(28, BoardSpace::new(String::from("Waterworks")));
+    space_defs.insert(29, BoardSpace::new(String::from("Marvin Gardens")));
+    space_defs.insert(30, BoardSpace::new(String::from("Go to Jail")));
+    space_defs.insert(31, BoardSpace::new(String::from("Pacific Avenue")));
+    space_defs.insert(32, BoardSpace::new(String::from("North Carolina Avenue")));
+    space_defs.insert(33, BoardSpace::new(String::from("Community Chest")));
+    space_defs.insert(34, BoardSpace::new(String::from("Pennsylvania Avenue")));
+    space_defs.insert(35, BoardSpace::new(String::from("Short Line Railroad")));
+    space_defs.insert(36, BoardSpace::new(String::from("Chance")));
+    space_defs.insert(37, BoardSpace::new(String::from("Park Place")));
+    space_defs.insert(38, BoardSpace::new(String::from("Luxury Tax")));
+    space_defs.insert(39, BoardSpace::new(String::from("Boardwalk")));
 
     space_defs
 }

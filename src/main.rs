@@ -163,20 +163,38 @@ async fn start_work(player_cnt: u32, turns: u32, board: &HashMap<u8, BoardSpace>
 
     for _turn in 1..turns {
         for player in &players {
-            take_player_turn(player, &mut rng, board, community_chest, chance);
+            let doubles_count: u8 = 0;
+            take_player_turn(player, &mut rng, board, community_chest, chance, doubles_count);
         }
     }
 }
 
-fn take_player_turn(player: &Player, rng: &mut ThreadRng, board: &HashMap<u8, BoardSpace>, community_chest: &mut CommunityChestDeck, chance: &mut ChanceDeck) {
-    let dice1 = rng.gen_range(1..7);
-    let dice2 = rng.gen_range(1..7);
-
-
-    println!("{} Rolled {} and {} totaling {}", player.name, dice1, dice2, dice1+dice2);
-
+fn take_player_turn(player: &Player, rng: &mut ThreadRng, board: &HashMap<u8, BoardSpace>, community_chest: &mut CommunityChestDeck, chance: &mut ChanceDeck, mut doubles_count: u8) {
+    let dice1 = rng.gen_range(1..=6);
+    let dice2 = rng.gen_range(1..=6);
 
     let mut landed_space = player.current_space.get() + dice1 + dice2;
+
+    if dice1 == dice2 {
+        doubles_count = doubles_count + 1;
+
+        if doubles_count == 1 {
+            println!("{} Rolled {} and {} totaling {}.  Doubles Once.", player.name, dice1, dice2, dice1+dice2)
+        }
+        else if doubles_count == 2 {
+            println!("{} Rolled {} and {} totaling {}.  Doubles Twice.", player.name, dice1, dice2, dice1+dice2)
+        }
+        else if doubles_count == 3 {
+            println!("{} Rolled {} and {} totaling {}.  Doubles Thrice. Go directly to jail, do not pass go, do not collect $200", player.name, dice1, dice2, dice1+dice2);
+            landed_space = 10; //Jail
+
+            log_space_landed(board, landed_space, player);
+            return;
+        }
+    }
+    else {
+        println!("{} Rolled {} and {} totaling {}", player.name, dice1, dice2, dice1+dice2);
+    }
 
     if landed_space > 39 {
         landed_space -= 40;
@@ -209,6 +227,13 @@ fn take_player_turn(player: &Player, rng: &mut ThreadRng, board: &HashMap<u8, Bo
                 log_space_landed(board, new_space, player);
             }
         };
+    }
+
+
+    //Now that we're done processing the players turn, if they rolled doubles they need to take another turn
+    if dice1 == dice2 {
+        //RECURSION!
+        take_player_turn(player, rng, board, community_chest, chance, doubles_count);
     }
 }
 

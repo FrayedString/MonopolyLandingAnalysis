@@ -8,6 +8,7 @@ Some sample results can be viewed here: https://docs.google.com/spreadsheets/d/1
 
 ## Known Deficiencies
 * While there are "get out of jail free" cards present in the Chance and Community Chest decks, and the fact of drawing them is output in the program execution.  There is no tracking as to whether or not the cards are currently in a players hands.  When/if the decks are re-shuffled, the cards are always re-included in the deck.
+* Simulated players are not sent to jail upon rolling doubles 3x in a row
 
 
 ### Other Thoughts

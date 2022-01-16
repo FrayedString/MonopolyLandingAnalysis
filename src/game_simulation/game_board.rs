@@ -16,7 +16,7 @@ pub enum SpaceActionEnum {
 
 
 pub trait BoardSpace {
-    fn get_space_name(&self) -> &str;
+    fn get_space_name(&self, idx: u8) -> String;
     fn get_landed_count(&self) -> u32;
     fn increment_landed(&mut self, player: &Player) -> SpaceActionEnum;
 }
@@ -33,8 +33,8 @@ impl BasicSpace {
     }
 }
 impl BoardSpace for BasicSpace {
-    fn get_space_name(&self) -> &str {
-        &self.name
+    fn get_space_name(&self, _idx: u8) -> String {
+        self.name.clone()
     }
 
     fn get_landed_count(&self) -> u32 {
@@ -60,8 +60,8 @@ impl ChanceSpace {
     }
 }
 impl BoardSpace for ChanceSpace {
-    fn get_space_name(&self) -> &str {
-        &self.name
+    fn get_space_name(&self, idx: u8) -> String {
+        format!("{} ({})", &self.name, idx)
     }
 
     fn get_landed_count(&self) -> u32 {
@@ -87,8 +87,8 @@ impl CommunityChestSpace {
     }
 }
 impl BoardSpace for CommunityChestSpace {
-    fn get_space_name(&self) -> &str {
-        &self.name
+    fn get_space_name(&self, idx: u8) -> String {
+        format!("{} ({})", &self.name, idx)
     }
 
     fn get_landed_count(&self) -> u32 {
@@ -115,8 +115,8 @@ impl GoToJailSpace {
     }
 }
 impl BoardSpace for GoToJailSpace {
-    fn get_space_name(&self) -> &str {
-        &self.name
+    fn get_space_name(&self, _idx: u8) -> String {
+        self.name.clone()
     }
 
     fn get_landed_count(&self) -> u32 {

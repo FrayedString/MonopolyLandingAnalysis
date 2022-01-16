@@ -38,7 +38,7 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
         if space.is_some() {
             let real_space = space.unwrap();
 
-            println!("{}|{}", real_space.get_landed_count(), real_space.get_space_name())
+            println!("{}|{}", real_space.get_landed_count(), real_space.get_space_name(i as u8))
         }
         else {
             println!("out of range");

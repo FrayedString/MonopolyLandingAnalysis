@@ -133,8 +133,8 @@ impl BoardSpace for GoToJailSpace {
 
 
 
-pub fn initialize_game_board() -> HashMap::<u8, Box<dyn BoardSpace>> {
-    let mut space_defs = HashMap::<u8, Box<dyn BoardSpace>>::with_capacity(40);
+pub fn initialize_game_board() -> HashMap::<usize, Box<dyn BoardSpace>> {
+    let mut space_defs = HashMap::<usize, Box<dyn BoardSpace>>::with_capacity(40);
 
 
     space_defs.insert(0, Box::new(BasicSpace::new(String::from("Go"))));

@@ -31,9 +31,7 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
 
     //Print the game summary:
     for i in 0..game_board.len() {
-        let idx = i as u8;
-
-        let space = game_board.get(&idx);
+        let space = game_board.get(&i);
 
         if space.is_some() {
             let real_space = space.unwrap();
@@ -51,7 +49,7 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
 
 
 
-fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMap<u8, Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
+fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMap<usize, Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
     let dice1 = rng.gen_range(1..=6);
     let dice2 = rng.gen_range(1..=6);
 
@@ -88,7 +86,7 @@ fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMa
 
     //Process any special space behaviors (go to jail, draw cards)
     loop {
-        let space = board.get_mut(&landed_space).unwrap();
+        let space = board.get_mut(&(landed_space as usize)).unwrap();
         let space_action = space.increment_landed(player);
 
         landed_space = 

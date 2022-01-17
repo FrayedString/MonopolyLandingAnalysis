@@ -16,7 +16,7 @@ pub enum SpaceActionEnum {
 
 
 pub trait BoardSpace {
-    fn get_space_name(&self, idx: u8) -> String;
+    fn get_space_name(&self, idx: &u8) -> String;
     fn get_landed_count(&self) -> u32;
     fn increment_landed(&mut self, player: &Player) -> SpaceActionEnum;
 }
@@ -33,7 +33,7 @@ impl BasicSpace {
     }
 }
 impl BoardSpace for BasicSpace {
-    fn get_space_name(&self, _idx: u8) -> String {
+    fn get_space_name(&self, _idx: &u8) -> String {
         self.name.clone()
     }
 
@@ -60,7 +60,7 @@ impl ChanceSpace {
     }
 }
 impl BoardSpace for ChanceSpace {
-    fn get_space_name(&self, idx: u8) -> String {
+    fn get_space_name(&self, idx: &u8) -> String {
         format!("{} ({})", &self.name, idx)
     }
 
@@ -87,7 +87,7 @@ impl CommunityChestSpace {
     }
 }
 impl BoardSpace for CommunityChestSpace {
-    fn get_space_name(&self, idx: u8) -> String {
+    fn get_space_name(&self, idx: &u8) -> String {
         format!("{} ({})", &self.name, idx)
     }
 
@@ -115,7 +115,7 @@ impl GoToJailSpace {
     }
 }
 impl BoardSpace for GoToJailSpace {
-    fn get_space_name(&self, _idx: u8) -> String {
+    fn get_space_name(&self, _idx: &u8) -> String {
         self.name.clone()
     }
 
@@ -133,8 +133,8 @@ impl BoardSpace for GoToJailSpace {
 
 
 
-pub fn initialize_game_board() -> HashMap::<usize, Box<dyn BoardSpace>> {
-    let mut space_defs = HashMap::<usize, Box<dyn BoardSpace>>::with_capacity(40);
+pub fn initialize_game_board() -> HashMap::<u8, Box<dyn BoardSpace>> {
+    let mut space_defs = HashMap::<u8, Box<dyn BoardSpace>>::with_capacity(40);
 
 
     space_defs.insert(0, Box::new(BasicSpace::new(String::from("Go"))));

@@ -28,19 +28,10 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
         }
     }
 
-
-    //Print the game summary:
-    for i in 0..game_board.len() {
-        let space = game_board.get(&i);
-
-        if space.is_some() {
-            let real_space = space.unwrap();
-
-            println!("{}|{}", real_space.get_landed_count(), real_space.get_space_name(i as u8))
-        }
-        else {
-            println!("out of range");
-        }
+    
+    //Better print method  (it's no longer in board order, but it doesn't matter since the data should be pulled into a tool 'ie: a spreadsheet' for aggregation anyway!)
+    for (space_idx, space) in game_board.iter() {
+        println!("{}|{}", space.get_landed_count(), space.get_space_name(space_idx))
     }
 }
 
@@ -49,7 +40,7 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
 
 
 
-fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMap<usize, Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
+fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMap<u8, Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
     let dice1 = rng.gen_range(1..=6);
     let dice2 = rng.gen_range(1..=6);
 
@@ -86,7 +77,7 @@ fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMa
 
     //Process any special space behaviors (go to jail, draw cards)
     loop {
-        let space = board.get_mut(&(landed_space as usize)).unwrap();
+        let space = board.get_mut(&landed_space).unwrap();
         let space_action = space.increment_landed(player);
 
         landed_space = 
@@ -94,8 +85,8 @@ fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMa
                 SpaceActionEnum::NoAction => break,
                 SpaceActionEnum::DrawCard(deck) => {
                     let card = match deck {
-                        CardDeckEnum::Chance => card_decks.get_chance_deck().draw_card().unwrap(),
-                        CardDeckEnum::CommunityChest => card_decks.get_community_chest_deck().draw_card().unwrap()
+                        CardDeckEnum::Chance => card_decks.get_chance_deck().draw_card(rng).unwrap(),
+                        CardDeckEnum::CommunityChest => card_decks.get_community_chest_deck().draw_card(rng).unwrap()
                     };
 
                     println!("{} Drew Card {}", player.get_player_name(), card.get_card_text());

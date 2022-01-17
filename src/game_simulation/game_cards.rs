@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use rand::{thread_rng, Rng};
+use rand::{prelude::ThreadRng, Rng};
 
 //Represents the move action to be taken when a Chance or community chest card is drawn
 type DrawnCardAction = fn(u8) -> Option<u8>;
@@ -60,10 +60,10 @@ impl GameActionCardDeck {
     }
 
 
-    pub fn draw_card(&mut self) -> Option<&GameActionCard> {
+    pub fn draw_card(&mut self, rng: &mut ThreadRng) -> Option<&GameActionCard> {
         //Shuffle if needed
         if self.deck.len() == 0 {
-            let mut rng = thread_rng();
+            //let mut rng = thread_rng();
 
             while self.dealt.len() > 0 {
                 self.deck.push_back(self.dealt.swap_remove(rng.gen_range(0..self.dealt.len())));

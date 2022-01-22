@@ -67,7 +67,7 @@ impl GameActionCardDeck {
 
             while self.dealt.len() > 0 {
                 self.deck.push_back(self.dealt.swap_remove(rng.gen_range(0..self.dealt.len())));
-            }   
+            }
         }
 
         //Draw

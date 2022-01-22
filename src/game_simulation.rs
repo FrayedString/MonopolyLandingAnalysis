@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use rand::{thread_rng, prelude::ThreadRng, Rng};
 
 mod player;
@@ -28,19 +26,29 @@ pub async fn run_simulation(player_count: u32, turn_count: u32) {
         }
     }
 
+
+    println!("-----------------------RESULTS-----------------------");
     
-    //Better print method  (it's no longer in board order, but it doesn't matter since the data should be pulled into a tool 'ie: a spreadsheet' for aggregation anyway!)
-    for (space_idx, space) in game_board.iter() {
-        println!("{}|{}", space.get_landed_count(), space.get_space_name(space_idx))
+
+
+    //Sort the results by most landed to least landed
+    game_board.sort_by(|a,b| {
+        b.get_landed_count().cmp(&a.get_landed_count())
+    });
+
+    //Print game results (space landed counts)
+    for space in game_board {
+        println!("{}|{}", space.get_landed_count(), space.get_space_name())
     }
+
+    println!("-----------------------------------------------------");
 }
 
 
 
 
 
-
-fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMap<u8, Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
+fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut Vec<Box<dyn BoardSpace>>, card_decks: &mut CardDecks, mut doubles_count: u8) {
     let dice1 = rng.gen_range(1..=6);
     let dice2 = rng.gen_range(1..=6);
 
@@ -77,7 +85,7 @@ fn take_player_turn(player: &mut Player, rng: &mut ThreadRng, board: &mut HashMa
 
     //Process any special space behaviors (go to jail, draw cards)
     loop {
-        let space = board.get_mut(&landed_space).unwrap();
+        let space = board.get_mut(landed_space as usize).unwrap();
         let space_action = space.increment_landed(player);
 
         landed_space = 

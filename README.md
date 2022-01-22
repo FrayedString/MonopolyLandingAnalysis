@@ -12,10 +12,11 @@ Some sample results can be viewed here: https://docs.google.com/spreadsheets/d/1
 
 
 ## Changelog
+* 0.4.0 - Added pretty colors for property names.  Final results are now printed in order of most landed to least landed.  Number of players and turns to simulate are now prompted at runtime.  Updated crates.io dependencies to latest
 * 0.3.0 - Refactored game logic from a single monolithic module (game_simulation) to 4 separate modules representing ownership of a distinct area of functionality
 * 0.2.0 - Refactored app from a single main.rs file into a main.rs and game_simulation.rs module file that contains the simulation logic
 * 0.1.0 - First ever release.  Entire codebase contained in main.rs, no use of traits or impls.  Basically it was terrible.
 
 
-### Other Thoughts (from v0.1.0)
+### Other Thoughts (legacy from v0.1.0 release)
 This my my 3rd ever app in Rust.  The code is chaotic and, I have no doubt, quite deficient idiomatically speaking.  However it does seem to work, and I feel it was a great exercise for getting used to dealing with Rust error messages
